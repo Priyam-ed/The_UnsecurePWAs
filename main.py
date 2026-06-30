@@ -6,6 +6,15 @@ from flask_cors import CORS
 import user_management as dbHandler
 import secrets
 from flask_wtf import CSRFProtect
+from urllib.parse import urlparse
+
+def is_safe_local_path(path):
+    if not path:
+        return False
+    parsed = urlparse(path)
+    if parsed.scheme or parsed.netloc:
+        return False
+    return path.startswith("/") and not path.startswith("//")
 
 # Code snippet for logging a message
 # app.logger.critical("message")
@@ -21,7 +30,8 @@ CORS(app)
 def addFeedback():
     if request.method == "GET" and request.args.get("url"):
         url = request.args.get("url", "")
-        return redirect(url, code=302)
+        if is_safe_local_path(url):
+            return redirect(url, code=302)
     if request.method == "POST":
         feedback = request.form["feedback"]
         dbHandler.insertFeedback(feedback)
@@ -36,7 +46,8 @@ def addFeedback():
 def signup():
     if request.method == "GET" and request.args.get("url"):
         url = request.args.get("url", "")
-        return redirect(url, code=302)
+        if is_safe_local_path(url):
+            return redirect(url, code=302)
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -53,7 +64,8 @@ def home():
     # Simple Dynamic menu
     if request.method == "GET" and request.args.get("url"):
         url = request.args.get("url", "")
-        return redirect(url, code=302)
+        if is_safe_local_path(url):
+            return redirect(url, code=302)
     # Pass message to front end
     elif request.method == "GET":
         msg = request.args.get("msg", "")
