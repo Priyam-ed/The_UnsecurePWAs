@@ -13,6 +13,8 @@
   <br/>
   <h1>Others feedback</h1>
       <div>
-        {% include "partials/success_feedback.html" %}
+        {% for item in feedback_list %}
+        <p>{{ item }}</p>
+        {% endfor %}
       </div>
 {% endblock %}
