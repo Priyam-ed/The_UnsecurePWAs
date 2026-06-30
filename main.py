@@ -4,11 +4,15 @@ from flask import request
 from flask import redirect
 from flask_cors import CORS
 import user_management as dbHandler
+import secrets
+from flask_wtf import CSRFProtect
 
 # Code snippet for logging a message
 # app.logger.critical("message")
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = secrets.token_hex(32)
+csrf = CSRFProtect(app)
 # Enable CORS to allow cross-origin requests (needed for CSRF demo in Codespaces)
 CORS(app)
 
