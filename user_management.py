@@ -15,7 +15,7 @@ def insertUser(username, password, DoB):
     con.commit()
     con.close()
 
-
+# This was done while fixing vulnerability number 2.
 def retrieveUsers(username, password):
     con = sql.connect("database_files/database.db")
     cur = con.cursor()
