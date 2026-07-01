@@ -41,6 +41,7 @@ def addFeedback():
         url = request.args.get("url", "")
         if is_safe_local_path(url):
             return redirect(url, code=302)
+        return render_template("/index.html")
     if request.method == "POST":
         feedback = request.form["feedback"]
         dbHandler.insertFeedback(feedback)
